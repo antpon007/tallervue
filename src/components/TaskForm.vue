@@ -25,8 +25,9 @@ export default {
     };
   },
   created() {
-    fetch($parent.servidor + "users")
+    fetch(this.$parent.servidor + "users")
       .then(response => {
+        console.log(this.$parent.servidor);
         return response.json();
       })
       .then(data => {

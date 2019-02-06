@@ -7,16 +7,17 @@
             <p>Loading</p>
           </div>
           <div v-else>
-            <task
+            <user
               v-for="item in items"
               :key="item._id"
-              :description="item.description"
-              :author="item.author"
-            ></task>
+              :firstname="item.firstname"
+              :lastname="item.lastname"
+              :email="item.email"
+            ></user>
           </div>
         </div>
         <div class="col-sm">
-          <task-form @save="create"></task-form>
+          <user-form @save="create"></user-form>
         </div>
       </div>
     </div>
@@ -24,14 +25,14 @@
 </template>
 
 <script>
-import Task from "./Task";
-import TaskForm from "./TaskForm";
+import User from "./User";
+import UserForm from "./UserForm";
 
 export default {
-  name: "tasks",
+  name: "users",
   components: {
-    task: Task,
-    "task-form": TaskForm
+    user: User,
+    "user-form": UserForm
   },
   data() {
     return {
@@ -40,30 +41,22 @@ export default {
     };
   },
   created() {
-    fetch(this.$parent.servidor + "tasks")
+    fetch(this.$parent.servidor + "users")
       .then(response => {
         return response.json();
       })
       .then(data => {
         const { items = [] } = data;
-        const tasks = items.map(item => {
-          const { userId = {} } = item;
-          const { firstname = "Anonimo", lastname = "" } = userId;
-          return {
-            description: item.description,
-            author: `${firstname} ${lastname}`
-          };
-        });
-
-        this.items = tasks;
+        const users = items;
+        this.items = users;
         this.loading = false;
       });
   },
   methods: {
-    create(tasks) {
-      fetch(this.$parent.servidor + "tasks", {
+    create(users) {
+      fetch(this.$parent.servidor + "users", {
         method: "POST",
-        body: JSON.stringify(tasks),
+        body: JSON.stringify(users),
         headers: {
           "Content-Type": "application/json"
         }
