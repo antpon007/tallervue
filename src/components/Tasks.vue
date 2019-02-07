@@ -2,21 +2,27 @@
   <div id="app">
     <div class="container">
       <div class="row">
-        <div class="col-sm">
+        <div class="col-8">
           <div v-if="loading">
             <p>Loading</p>
           </div>
-          <div v-else>
+          <div v-else class="col-8">
             <task
+              style="margin:4px;"
               v-for="item in items"
               :key="item._id"
               :description="item.description"
               :author="item.author"
+              :authorId="item.authorId"
+              :finished="item.finished"
+              :taskId="item.taskId"
+              @edit="edit"
+              @delet="delet"
             ></task>
           </div>
         </div>
-        <div class="col-sm">
-          <task-form @save="create"></task-form>
+        <div class="col-4">
+          <task-form :taskUpdate="taskUpdate" :taskId="taskId" @save="create"></task-form>
         </div>
       </div>
     </div>
@@ -36,7 +42,9 @@ export default {
   data() {
     return {
       loading: true,
-      items: []
+      items: [],
+      taskId: "",
+      taskUpdate: {}
     };
   },
   created() {
@@ -48,13 +56,15 @@ export default {
         const { items = [] } = data;
         const tasks = items.map(item => {
           const { userId = {} } = item;
-          const { firstname = "Anonimo", lastname = "" } = userId;
+          const { firstname = "Anonimo", lastname = "", _id = "" } = userId;
           return {
             description: item.description,
-            author: `${firstname} ${lastname}`
+            author: `${firstname} ${lastname}`,
+            authorId: _id,
+            taskId: item._id,
+            finished: item.finished
           };
         });
-
         this.items = tasks;
         this.loading = false;
       });
@@ -73,6 +83,31 @@ export default {
         })
         .then(data => {
           this.items.push(data);
+          alert("Tarea guardada");
+        });
+    },
+    edit(tasks) {
+      this.taskUpdate = {
+        taskId: tasks.taskId,
+        authorId: tasks.authorId,
+        description: tasks.description,
+        finished: tasks.finished
+      };
+    },
+    delet(tasks) {
+      fetch(this.$parent.servidor + "tasks/" + tasks.taskId, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+        .then(response => {
+          return response.json();
+        })
+        .then(data => {
+          var index = this.items.indexOf(data);
+          this.items.splice(index, 1);
+          alert("Tarea eliminada");
         });
     }
   }

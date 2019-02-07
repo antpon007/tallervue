@@ -1,11 +1,10 @@
 <template>
-  <div id="main clearfix">
+  <div id="main container clearfix">
     <div>
       <div class>
         <h1 class="nombre-sitio">Taller Vue JS</h1>
-        <p class="slogan">
-          Objetivos
-          1. Consumir el API creado en Node JS, Express y MongoDB
+        <p class="slogan">Objetivos
+          <br>1. Consumir el API creado en Node JS, Express y MongoDB
           <br>2. Crear una aplicación Web con Vue JS
         </p>
       </div>
@@ -13,11 +12,11 @@
 
     <h1>REGISTRA USUARIOS Y/O ASIGNA TAREAS</h1>
     <div class="box-principal clearfix">
-      <div class="box-hija" v-on:click="tasks()">
-        <p>Administra todas tus tareas .</p>
+      <div class="box-hija btn btn-success" v-on:click="tasks()">
+        <h2>Administra todas tus tareas .</h2>
       </div>
-      <div class="box-hija" v-on:click="users()">
-        <p>Administra todos tus usuarios.</p>
+      <div class="box-hija btn btn-success" v-on:click="users()">
+        <h2>Administra todos tus usuarios.</h2>
       </div>
     </div>
     <router-view/>
@@ -29,7 +28,6 @@ export default {
   name: "principal",
   data() {
     return {
-      prueba: "HOLA",
       servidor: "http://localhost:3000/api/v1/"
     };
   },
