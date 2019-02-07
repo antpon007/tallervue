@@ -44,6 +44,6 @@ npm run build
 
 **nota:** _Tener en cuenta que este proyecto fue realizado con nodejs v. 10 (Instalarlo si aun no lo tiene)_
 
-Esta API cumple con lo lineamientos del contrato REST, para hacer uso de los metodos GET, POST, PUSH, DELETE, se utiliza como origen http://localhost:8080/#/
+Esta APP utiliza como origen http://localhost:8080/#/
 
 
