@@ -3,12 +3,15 @@
     <div class="card">
       <div class="card-body row">
         <div class="col-6">
-          <h5 class="card-title">{{description}}</h5>
-          <p class="card-text">{{author}}</p>
-          <div v-if="finished" class="btn-success">
-            <p>Finalizada</p>
+          <h5 class="card-title">Task: {{description}}</h5>
+          <p class="card-text">Author: {{author}}</p>
+          <p>created At: {{createdAt}}</p>
+          <div>State:
+            <div v-if="finished" class="btn-success">
+              <p>Finalizada</p>
+            </div>
+            <p v-else class="btn-warning">Pendiente</p>
           </div>
-          <p v-else class="btn-warning">Pendiente</p>
         </div>
         <div class="col-2">
           <button
@@ -54,6 +57,10 @@ export default {
     finished: {
       type: Boolean,
       required: true
+    },
+    createdAt: {
+      type: String,
+      required: true
     }
   },
   methods: {
@@ -63,7 +70,8 @@ export default {
         description: this.description,
         author: this.author,
         authorId: this.authorId,
-        finished: this.finished
+        finished: this.finished,
+        createdAt: this.createdAt
       });
     },
     delet() {

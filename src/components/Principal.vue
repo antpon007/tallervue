@@ -1,22 +1,22 @@
 <template>
   <div id="main container clearfix">
     <div>
-      <div class>
-        <h1 class="nombre-sitio">Taller Vue JS</h1>
-        <p class="slogan">Objetivos
+      <div class style="padding:0 50px;">
+        <h2 class="nombre-sitio">Taller Vue JS</h2>
+        <p>Objetivos
           <br>1. Consumir el API creado en Node JS, Express y MongoDB
           <br>2. Crear una aplicación Web con Vue JS
         </p>
       </div>
     </div>
 
-    <h1>REGISTRA USUARIOS Y/O ASIGNA TAREAS</h1>
-    <div class="box-principal clearfix">
+    <h3 style="padding:0 50px;">REGISTRA USUARIOS Y/O ASIGNA TAREAS</h3>
+    <div class="box-principal clearfix" style="padding:0 30px;">
       <div class="box-hija btn btn-success" v-on:click="tasks()">
-        <h2>Administra todas tus tareas .</h2>
+        <h4>Administra todas tus tareas .</h4>
       </div>
       <div class="box-hija btn btn-success" v-on:click="users()">
-        <h2>Administra todos tus usuarios.</h2>
+        <h4>Administra todos tus usuarios.</h4>
       </div>
     </div>
     <router-view/>
@@ -64,7 +64,7 @@ export default {
   border: 1px solid #ccc;
   padding: 20px 20px;
   margin: 20px;
-  height: 150px;
+  height: 60px;
   -webkit-box-shadow: 6px 6px 5px 0px rgba(159, 188, 207, 1);
   -moz-box-shadow: 6px 6px 5px 0px rgba(159, 188, 207, 1);
   box-shadow: 6px 6px 5px 0px rgba(159, 188, 207, 1);

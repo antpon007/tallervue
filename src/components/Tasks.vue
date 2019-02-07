@@ -1,18 +1,19 @@
 <template>
   <div id="app">
-    <div class="container">
+    <div class="container col-12">
       <div class="row">
         <div class="col-8">
           <div v-if="loading">
             <p>Loading</p>
           </div>
-          <div v-else class="col-8">
+          <div v-else class="col-12">
             <task
               style="margin:4px;"
-              v-for="item in items"
+              v-for="item in even(items)"
               :key="item._id"
               :description="item.description"
               :author="item.author"
+              :createdAt="item.createdAt"
               :authorId="item.authorId"
               :finished="item.finished"
               :taskId="item.taskId"
@@ -62,7 +63,8 @@ export default {
             author: `${firstname} ${lastname}`,
             authorId: _id,
             taskId: item._id,
-            finished: item.finished
+            finished: item.finished,
+            createdAt: item.createdAt
           };
         });
         this.items = tasks;
@@ -91,7 +93,8 @@ export default {
         taskId: tasks.taskId,
         authorId: tasks.authorId,
         description: tasks.description,
-        finished: tasks.finished
+        finished: tasks.finished,
+        createdAt: tasks.createdAt
       };
     },
     delet(tasks) {
@@ -109,6 +112,12 @@ export default {
           this.items.splice(index, 1);
           alert("Tarea eliminada");
         });
+    },
+    even: function(items) {
+      // Set slice() to avoid to generate an infinite loop!
+      return items.slice().sort(function(a, b) {
+        return new Date(b.createdAt) - new Date(a.createdAt);
+      });
     }
   }
 };
