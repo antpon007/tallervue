@@ -23,7 +23,12 @@
           </div>
         </div>
         <div class="col-4">
-          <task-form :taskUpdate="taskUpdate" :taskId="taskId" @save="create"></task-form>
+          <task-form
+            :taskUpdate="replaceEdit(taskUpdate)"
+            :taskId="taskId"
+            @save="create"
+            @update="update"
+          ></task-form>
         </div>
       </div>
     </div>
@@ -45,34 +50,43 @@ export default {
       loading: true,
       items: [],
       taskId: "",
-      taskUpdate: {}
+      taskUpdate: {
+        taskId: "",
+        description: "",
+        authorId: "",
+        finished: ""
+      }
     };
   },
   created() {
-    fetch(this.$parent.servidor + "tasks")
-      .then(response => {
-        return response.json();
-      })
-      .then(data => {
-        const { items = [] } = data;
-        const tasks = items.map(item => {
-          const { userId = {} } = item;
-          const { firstname = "Anonimo", lastname = "", _id = "" } = userId;
-          return {
-            description: item.description,
-            author: `${firstname} ${lastname}`,
-            authorId: _id,
-            taskId: item._id,
-            finished: item.finished,
-            createdAt: item.createdAt
-          };
-        });
-        this.items = tasks;
-        this.loading = false;
-      });
+    this.load();
   },
   methods: {
+    load() {
+      fetch(this.$parent.servidor + "tasks")
+        .then(response => {
+          return response.json();
+        })
+        .then(data => {
+          const { items = [] } = data;
+          const tasks = items.map(item => {
+            const { userId = {} } = item;
+            const { firstname = "Anonimo", lastname = "", _id = "" } = userId;
+            return {
+              description: item.description,
+              author: `${firstname} ${lastname}`,
+              authorId: _id,
+              taskId: item._id,
+              finished: item.finished,
+              createdAt: item.createdAt
+            };
+          });
+          this.items = tasks;
+          this.loading = false;
+        });
+    },
     create(tasks) {
+      console.log(tasks);
       fetch(this.$parent.servidor + "tasks", {
         method: "POST",
         body: JSON.stringify(tasks),
@@ -84,8 +98,24 @@ export default {
           return response.json();
         })
         .then(data => {
-          this.items.push(data);
-          alert("Tarea guardada");
+          alert("Task save");
+          this.load();
+        });
+    },
+    update(tasks) {
+      fetch(this.$parent.servidor + "tasks/" + tasks.id, {
+        method: "PUT",
+        body: JSON.stringify(tasks),
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+        .then(response => {
+          return response.json();
+        })
+        .then(data => {
+          alert("Save changes");
+          this.load();
         });
     },
     edit(tasks) {
@@ -109,8 +139,8 @@ export default {
         })
         .then(data => {
           var index = this.items.indexOf(data);
-          this.items.splice(index, 1);
           alert("Tarea eliminada");
+          this.load();
         });
     },
     even: function(items) {
@@ -118,6 +148,9 @@ export default {
       return items.slice().sort(function(a, b) {
         return new Date(b.createdAt) - new Date(a.createdAt);
       });
+    },
+    replaceEdit: function(tasksUpdate) {
+      return tasksUpdate;
     }
   }
 };
